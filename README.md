@@ -1,5 +1,58 @@
 ![](../../workflows/gds/badge.svg) ![](../../workflows/docs/badge.svg) ![](../../workflows/test/badge.svg) ![](../../workflows/fpga/badge.svg)
 
+# How I did it
+
+* Build the project first using normal Wokwi TT08 template method
+* Download GDS workflow file tt_submission.zip
+* Extract contents and copy files into this project (careful to exclude from copying config*.json user_config.json)
+
+```
+# Extract the files from downloaded ZIP
+unzip tt_submission.zip -d tt_submission
+
+# Extract wokwi generated verilog files
+cp -avi tt_submission/src/*.v src/
+
+# Extract wokwi_diagram.json
+cp -avi tt_submission/src/wokwi_diagram.json src/
+
+# Remove all references to signals: ena uio_in uio_out uio_oe
+egrep -v " (uio_(oe|out|in)|ena)" src/tt_um_wokwi_408272151035187201.v > src/tt_um_wokwi_408272151035187201.v.tmp
+
+# Check the results look ok
+diff -u src/tt_um_wokwi_408272151035187201.v src/tt_um_wokwi_408272151035187201.v.tmp
+
+# Overwrite original with changes
+mv src/tt_um_wokwi_408272151035187201.v.tmp src/tt_um_wokwi_408272151035187201.v
+
+# Edit info.yaml to fixup source_files: tt_um_wokwi_408272151035187201.v cells.v
+
+# Edit info.yaml to fixup top_module_name: tt_um_wokwi_408272151035187201
+
+# Edit info.yaml to copy pinout section from full 1x1 tile wokwi project
+
+# Alternatively I added verilog preprocessor `ifndef TINYTAPEOUT_MICRO_FORMAT
+# to see if the standard wokwi verilog generator can just emit this by default
+# and the micro format can set the verilog preprocessor by default.
+
+# Edited src/tt_um_wokwi_408272151035187201.v with verilog ifndef around
+# top level module ports and default assignment to GND.
+
+# Added to src/config.json the: "VERILOG_DEFINES": ["TINYTAPEOUT_MICRO_FORMAT"],
+
+# Let the project build.
+```
+
+
+
+Original full TT 1x1 tile project.  Need to manually extract verilog to
+include in project https://github.com/dlmiles/tt08-wokwi-doodle/
+
+[Wokwi Project: 408272151035187201](https://wokwi.com/projects/408272151035187201)
+
+![Circuit Image](tt08-micro-wokwi-doodle.png)
+
+
 # Tiny Tapeout Factory Test
 
 - [Read the documentation for project](docs/info.md)
