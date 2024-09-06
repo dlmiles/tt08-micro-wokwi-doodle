@@ -39,6 +39,7 @@ mv src/tt_um_wokwi_408272151035187201.v.tmp src/tt_um_wokwi_408272151035187201.v
 # top level module ports and default assignment to GND.
 
 # Added to src/config.json the: "VERILOG_DEFINES": ["TINYTAPEOUT_MICRO_FORMAT"],
+# Added to src/config.json the: "LINTER_DEFINES": ["TINYTAPEOUT_MICRO_FORMAT"],
 
 # Let the project build.
 ```
