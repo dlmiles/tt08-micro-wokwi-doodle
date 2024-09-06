@@ -5,6 +5,9 @@
 // verilator lint_off UNUSEDSIGNAL
 // verilator lint_off PINCONNECTEMPTY
 
+// ./tt_tool.py doesn't set config.json preprocessor defines ?
+`define TINYTAPEOUT_MICRO_FORMAT 1
+
 module tt_um_wokwi_408272151035187201(
   input  wire [7:0] ui_in,    // Dedicated inputs
   output wire [7:0] uo_out,    // Dedicated outputs
